@@ -181,15 +181,17 @@ if __name__ == '__main__':
     print(r2)
 
     # 画图
-    with plt.style.context(['science', "no-latex"]):
-        fig, ax = plt.subplots(figsize=(8, 5))
+    with plt.style.context(['science', "no-latex"]): # 使用 plt.style.context 临时设置绘图样式。 'science' 风格用于生成具有科学出版物风格的图形。 "no-latex" 选项禁用 LaTeX 渲染，这样可以避免未安装 LaTeX 的系统上出现问题。 
 
-        ax.plot(range(len(pred)), pred, label="Pred", color="red", linestyle='dashed')
-        ax.plot(range(len(pred)), real, label="Real", color="black")
-        ax.legend()
+ 
+        fig, ax = plt.subplots(figsize=(8, 5))   # 创建一个包含一个子图的图形，图形大小设置为 8x5 英寸。
+
+        ax.plot(range(len(pred)), pred, label="Pred", color="red", linestyle='dashed') # 绘制预测值的折线图。 range(len(pred)) 生成 x 轴数据，pred 是 y 轴数据。 label="Pred" 设置图例标签为 "Pred"。  color="red" 设置线条颜色为红色。  linestyle='dashed' 设置线条样式为虚线。 
+        ax.plot(range(len(pred)), real, label="Real", color="black") # 绘制真实值的折线图。  label="Real" 设置图例标签为 "Real"。  color="black" 设置线条颜色为黑色。
+        ax.legend()    # 添加图例，以显示各线条的标签。
         ax.set(xlabel='Time')
-        ax.set(ylabel='Rul')
-        ax.autoscale(tight=True)
-        fig.savefig('fig1.jpg', dpi=300)
+        ax.set(ylabel='Rul')      
+        ax.autoscale(tight=True)           # 自动缩放图形，使图形紧凑。
+        fig.savefig('fig1.jpg', dpi=300)   # 将图形保存为名为 'fig1.jpg' 的 JPEG 文件，分辨率为 300 DPI。
 
         plt.show()
