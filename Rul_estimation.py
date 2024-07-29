@@ -180,6 +180,7 @@ if __name__ == '__main__':
 
     print(r2)
 
+    # 画图
     with plt.style.context(['science', "no-latex"]):
         fig, ax = plt.subplots(figsize=(8, 5))
 
