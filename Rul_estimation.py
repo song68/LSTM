@@ -135,23 +135,25 @@ if __name__ == '__main__':
             loss.backward()
             # 更新
             optimizer.step()
-
-            train_losses.append(loss.cpu().item())
-
+           
+            train_losses.append(loss.cpu().item())   # 每次LOSS存下来
+       
+        # 验证集
         model.eval()
         valid_losses = []
-        with torch.no_grad():
+        with torch.no_grad(): # 不记录梯度
             for data_input, data_target in valid_dataloader:
                 data_input, data_target = data_input.to(device), data_target.to(device)
                 out = model(data_input)
                 loss = criterion(out, data_target)
-                valid_losses.append(loss.cpu().item())
+                valid_losses.append(loss.cpu().item())   # 每次LOSS存下来
 
-        avg_train_loss = np.mean(train_losses)
-        avg_valid_loss = np.mean(valid_losses)
+        avg_train_loss = np.mean(train_losses)  # 平均LOSS
+        avg_valid_loss = np.mean(valid_losses)  # 平均LOSS
 
         print(f"Epoch {e + 1} Train Loss: {avg_train_loss:} Valid Loss: {avg_valid_loss}")
-
+           
+        # 早停机制
         if avg_valid_loss < best_valid_loss:
             best_valid_loss = avg_valid_loss
         else:
@@ -159,9 +161,10 @@ if __name__ == '__main__':
 
         if count > patience:
             print("Early stopping")
-            torch.save(model, r'LSTMmodel.pth')
+            torch.save(model, r'LSTMmodel.pth')  # 保存模型
             break
-
+    
+    # 测试
     pred = []
     real = []
     model.eval()
@@ -172,8 +175,10 @@ if __name__ == '__main__':
             pred.append(out.cpu().item())
             real.append(data_target.cpu().item())
 
-    r2 = r2_score(real, pred)
-    mse = mean_squared_error(real, pred)
+    r2 = r2_score(real, pred)             # 衡量数据间相关性，越接近于1越好
+    mse = mean_squared_error(real, pred)  # 与指标数量级有关
+
+    print(r2)
 
     with plt.style.context(['science', "no-latex"]):
         fig, ax = plt.subplots(figsize=(8, 5))
